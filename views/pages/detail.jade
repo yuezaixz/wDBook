@@ -1,0 +1,21 @@
+extends ./layout
+
+block content
+	.contrainer
+		.row
+			.col-md-7
+				img(src="#{book.cover}",alt="#{book.title}")
+			.col-md-5
+				dl.dl-horizontal
+					dt 书名
+					dd=book.title
+					dt 作者
+					dd=book.author
+					dt 国家
+					dd=book.country
+					dt 语言
+					dd=book.language
+					dt 出版时间
+					dd=book.year
+					dt 简介
+					dd=book.summary

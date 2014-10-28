@@ -1,0 +1,45 @@
+extends ./layout
+
+block content
+	.contrainer
+		.row
+			form.form-horizontal(method="post",action="/admin/book/new")
+				.form-group
+					label.col-sm-2.control-label(for="inputTitle") 书名
+					.col-sm-10
+						input#inputTittle.form-control(type="text",name="book[title]")
+				.form-group
+					label.col-sm-2.control-label(for="inputAuthor") 作者
+					.col-sm-10
+						input#inputAuthor.form-control(type="text", name="book[author]", value=book.author)
+				.form-group
+					label.col-sm-2.control-label(for="inputCountry") 国家
+					.col-sm-10
+						input#inputCountry.form-control(type="text", name="book[country]", value=book.country)
+				.form-group
+					label.col-sm-2.control-label(for="inputLanguage") 语种
+					.col-sm-10
+						input#inputLanguage.form-control(type="text", name="book[language]", value=book.language)
+				.form-group
+					label.col-sm-2.control-label(for="inputCover") 书籍封面
+					.col-sm-10
+						input#inputCover.form-control(type="text", name="book[cover]", value=book.cover)
+				.form-group
+					label.col-sm-2.control-label(for="uploadCover") 封面上传
+					.col-sm-10
+						input#uploadCover(type="file", name="uploadCover")
+				.form-group
+					label.col-sm-2.control-label(for="inputBuyAddress") 购买地址
+					.col-sm-10
+						input#inputBuyAddress.form-control(type="text", name="book[buyAddress]", value=book.buyAddress)
+				.form-group
+					label.col-sm-2.control-label(for="inputYear") 出版时间
+					.col-sm-10
+						input#inputYear.form-control(type="text", name="book[year]", value=book.year)
+				.form-group
+					label.col-sm-2.control-label(for="inputSummary") 书籍简介
+					.col-sm-10
+						textarea#inputSummary.form-control(type="text", name="book[summary]")= book.summary
+				.form-group
+					.col-sm-offset-2.col-sm-10
+						button.btn.btn-default(type="submit") 录入
