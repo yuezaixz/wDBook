@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Book = mongoose.model('Book');
+var _ = require('underscore');
 
 exports.detail = function(req,res){
 	var id = req.params.id;
@@ -43,13 +44,11 @@ exports.save = function(req,res){
 	var id = req.body.book._id;
 	var bookObj = req.body.book;
 	var _book;
-	console.log(typeof(id) !== 'undefined');
 	if(typeof(id) !== 'undefined'){
 		Book.findById(id,function(err,book){
 			if(err){
 				console.log(err);
 			}
-
 			_book = _.extend(book,bookObj);
 			_book.save(function(err,book){
 				if (err) {
