@@ -7,7 +7,7 @@ block content
 				.form-group
 					label.col-sm-2.control-label(for="inputTitle") 书名
 					.col-sm-10
-						input#inputTittle.form-control(type="text",name="book[title]")
+						input#inputTittle.form-control(type="text",name="book[title]",value=book.title)
 					if book._id
 						input(type="hidden", name="book[_id]", value=book._id)
 				.form-group

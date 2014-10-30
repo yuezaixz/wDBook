@@ -34,6 +34,26 @@ app.get('/',function(req,res){
 		});
 	});
 });
+app.get('/results',function(req,res){
+	var q = req.param('q');
+	var cond = {};
+	if (q) {
+		//如果有搜索请求就增加查询条件
+		//用正则表达式得到的pattern对title属性进行模糊查询
+		//这里是搜集合里title属性包含str串的所有结果
+		var pattern = new RegExp("^.*"+q+".*$");
+		cond.title = pattern;
+	}
+	Book.find(cond,function(err,books){
+		if(err){
+			console.log(err);
+		}
+		res.render('list',{
+			title:'wDBook ---列表页',
+			books:books
+		});
+	});
+});
 app.get('/admin/list',function(req,res){
 	Book.fetch(function(err,books){
 		if(err){
@@ -44,6 +64,26 @@ app.get('/admin/list',function(req,res){
 			books:books
 		});
 	});
+});
+app.delete('/admin/movie/list',function(req,res){
+	//拿路径中的参数 比如/admin/movie/:id
+	// var id = req.params.id;
+	//拿POST提交表单中的id
+	// var id = req.body.id;
+	//拿路径中的问号后的参数
+	// var id = req.query.id
+
+	//express封装的id，先路径，后POST数据，最后再问号后
+	var id =  req.param('id');
+	if(id){
+		Book.remove({_id:id},function(err,book){
+			if(err){
+				console.log(err);
+			}else{
+				res.json({success:1});
+			}
+		});
+	}
 });
 app.get('/book/:id',function(req,res){
 	var id = req.params.id;
@@ -71,12 +111,22 @@ app.get('/admin/book',function(req,res){
 		}
 	});
 });
+app.get('/update/:id',function(req,res){
+	var id = req.param('id');
+	Book.findById(id,function(err,book){
+		res.render('admin',{
+			title:'wDBook ---后台修改页面',
+			book:book
+		});
+	});
+});
 app.post('/admin/book/new',function(req,res){
 	var id = req.body.book._id;
 	var bookObj = req.body.book;
 	var _book;
+	console.log(typeof(id) !== 'undefined');
 	if(typeof(id) !== 'undefined'){
-		Book.findById(function(err,book){
+		Book.findById(id,function(err,book){
 			if(err){
 				console.log(err);
 			}
