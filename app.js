@@ -4,10 +4,10 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
+var logger = require('morgan');
 //session持久化在mongoDb的库,express4.0、connect-mongo0.4后，
 //最后的参数不再传入express了，而传入session，
 var mongoStore = require('connect-mongo')(session);
-var _ = require('underscore');
 var port = process.env.PORT || 3022;
 var app = express();
 var fs = require('fs');
@@ -64,6 +64,14 @@ app.use(session({
 		collection: setting.sessionName
 	})
 }));
+//开发模式开启DEBUG
+if('development' === app.get("env")){
+	app.set('showStackError',true);
+	app.use(logger(':method :url :status'));
+	app.locals.pretty = true;
+	mongoose.set('debug',true);
+}
+
 //静态资源的获取目录
 app.use(express.static(path.join(__dirname,setting.static_path)));
 
