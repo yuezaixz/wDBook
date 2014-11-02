@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var logger = require('morgan');
+var markdown = require('markdown-js');
 //session持久化在mongoDb的库,express4.0、connect-mongo0.4后，
 //最后的参数不再传入express了，而传入session，
 var mongoStore = require('connect-mongo')(session);
@@ -47,6 +48,16 @@ walk(setting.models_path);
 
 app.set('views',setting.viewPath);
 app.set('view engine',setting.viewEngine);
+
+//markdown的解析器
+app.engine('md', function(path, options, fn){
+	fs.readFile(path, 'utf8', function(err, str){
+		if (err) return fn(err);
+		str = markdown.parse(str).toString();
+		fn(null, str);
+	});
+});
+
 //页面内容解析，会进行表单数据格式化
 app.use(bodyParser());
 
@@ -81,5 +92,7 @@ require(setting.routePath)(app);
 app.listen(port);
 //设置moment为全局内置对象
 app.locals.moment = require('moment');
+
+app.locals.makeHtml = markdown.makeHtml;
 
 console.log('wDBook started on port ' + port);

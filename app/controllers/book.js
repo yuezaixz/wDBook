@@ -1,15 +1,25 @@
 var mongoose = require('mongoose');
+var Comment = mongoose.model('Comment');
 var Book = mongoose.model('Book');
 var _ = require('underscore');
 
 exports.detail = function(req,res){
 	var id = req.params.id;
 	Book.findById(id,function(err,book){
-	console.log(book);
-		res.render('detail',{
-			title:'wDBook ---'+book.title+'详情页',
-			book:book
-		});
+		Comment
+			.find({book:id})
+			.populate('from', 'name')
+			.populate('reply.from reply.to', 'name')
+			.exec(function(err,comments){
+				if(err){
+					console.log(err);
+				}
+				res.render('detail',{
+					title:'wDBook ---'+book.title+'详情页',
+					book:book,
+					comments: comments
+				});
+			});
 	});
 };
 

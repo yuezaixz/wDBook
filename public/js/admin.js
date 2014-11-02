@@ -6,7 +6,7 @@ $(function(){
 
 		$.ajax({
 			type: 'DELETE',
-			url: '/admin/movie/list?id=' + id
+			url: '/admin/book/list?id=' + id
 		}).done(function(results) {
 			if (results.success === 1) {
 				if (tr.length > 0) {

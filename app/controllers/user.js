@@ -20,12 +20,25 @@ exports.signup = function(req,res){
 		}
 	});
 };
+exports.showSignin = function(req,res){
+	res.render('signin',{
+		title:'登录页面'
+	});
+};
+exports.showSignup = function(req,res){
+	res.render('signup',{
+		title:'注册页面'
+	});
+};
 
 exports.signin = function(req,res){
 	var _user = req.body.user;
 	var username = _user.name;
 	var pwd = _user.password;
 	User.findOne({name:username},function(err,user){
+		if(!user){
+			return res.redirect('/signin');
+		}
 		user.comparePassword(pwd,function(err,isMatch){
 			if (err) {
 				console.log(err);
@@ -44,4 +57,18 @@ exports.signin = function(req,res){
 exports.logout = function(req,res){
 	delete req.session.user;
 	res.redirect('/');
+};
+exports.needSignin = function(req,res,next){
+	var user = req.session.user;
+	if(!user){
+		res.redirect('/signin');
+	}
+	next();
+};
+exports.needAdmin = function(req,res,next){
+	var user = req.session.user;
+	if(!user || user.role <= 50){
+		res.redirect('/signin');
+	}
+	next();
 };
