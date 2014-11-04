@@ -6,8 +6,11 @@ var _ = require('underscore');
 exports.detail = function(req,res){
 	var id = req.params.id;
 	Book.findById(id,function(err,book){
+		if(err){
+			console.log(err);
+		}
 		Comment
-			.find({book:id})
+			.find({'book':id})
 			.populate('from', 'name')
 			.populate('reply.from reply.to', 'name')
 			.exec(function(err,comments){
@@ -26,17 +29,7 @@ exports.detail = function(req,res){
 exports.new = function(req,res){
 	res.render('admin',{
 		title:'wDBook ---后台录入页面',
-		book:{
-			_id:'',
-			title:'',
-			author:'',
-			country:'',
-			language:'',
-			year:'',
-			summary:'',
-			buyAddress:'',
-			cover:''
-		}
+		book:{}
 	});
 };
 
@@ -68,16 +61,7 @@ exports.save = function(req,res){
 			});
 		});
 	} else {
-		_book = new Book({
-			author : bookObj.author,
-			title : bookObj.title,
-			language : bookObj.language,
-			country : bookObj.country,
-			summary : bookObj.summary,
-			flash : bookObj.flash,
-			cover : bookObj.cover,
-			year : bookObj.year
-		});
+		_book = new Book(bookObj);
 		_book.save(function(err,book){
 			if (err) {
 				console.log(err);

@@ -6,13 +6,13 @@ block content
 			table.table.table-hover.table-bordered
 				thead
 					tr
-						th 书名
+						th 文章名
 						th 作者
 						th 国家
 						th 语种
-						th 出版时间
+						th 发布时间
 						th 书籍简介
-						th 录入时间
+						th 摘录时间
 						th 查看
 						th 更新
 						th 删除
@@ -26,8 +26,8 @@ block content
 							td #{book.year}
 							td #{book.summary}
 							td #{moment(book.meta.createTime).format('MM/DD/YYYY')}
-							td: a(target="_blank",href="../book/#{book._id}") 查看
-							td: a(target="_blank",href="../update/#{book._id}") 修改
+							td: a(target="_blank",href="/book/#{book._id}") 查看
+							td: a(target="_blank",href="/update/#{book._id}") 修改
 							td 
 								button.btn.btn-danger.del(type="button" data-id="#{book._id}") 删除
 	script(src="/js/admin.js")

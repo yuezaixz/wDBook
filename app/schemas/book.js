@@ -8,17 +8,14 @@ var BookSchema = new Schema({
   language: String,
   country: String,
   summary: String,
-  flash: String,
   cover: String,
+  articleAddress:String,
   year: Number,
   // pv: {
   //   type: Number,
   //   default: 0
   // },
-  // category: {
-  //   type: ObjectId,
-  //   ref: 'Category'
-  // },
+  tags: String,
   meta: {
     createUser:String,
     updateUser:String,

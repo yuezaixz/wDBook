@@ -1,4 +1,5 @@
 $(function(){
+	//list页面的删除按钮
 	$('.del').click(function(e) {
 		var target = $(e.target);
 		var id = target.data('id');
@@ -15,4 +16,19 @@ $(function(){
 			}
 		});
 	});
+
+	var tagData = $('#inputTag').val();
+	tagData = tagData?tagData.split(',') : [];
+
+	//标签效果
+	var tagObj = $('#tags').tags({
+		'tagData':tagData,
+		afterAddingTag: function(tag){
+			$('#inputTag').val(tagObj.getTags().join(','));
+		},
+		afterDeletingTag:function(tag){
+			$('#inputTag').val(tagObj.getTags().join(','));
+		}
+	});
 });
+
