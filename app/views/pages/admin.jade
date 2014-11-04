@@ -3,7 +3,7 @@ extends ../layout
 block content
 	.contrainer
 		.row
-			form.form-horizontal(method="post",action="/admin/book/new")
+			form.form-horizontal(method="post",action="/admin/book/new",enctype="multipart/form-data")
 				.form-group
 					label.col-sm-2.control-label(for="inputTitle") 文章名
 					.col-sm-10

@@ -24,7 +24,7 @@ module.exports = function(app) {
 	app.get('/book/:id',Book.detail);
 	app.get('/admin/book',User.needSignin,User.needAdmin,Book.new);
 	app.get('/update/:id',Book.update);
-	app.post('/admin/book/new',Book.save);
+	app.post('/admin/book/new',User.needSignin,User.needAdmin,Book.uploadCoverFile,Book.save);
 
 	app.post('/user/comment',Comment.save);
 

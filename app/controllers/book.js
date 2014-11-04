@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Comment = mongoose.model('Comment');
 var Book = mongoose.model('Book');
 var _ = require('underscore');
+var fs = require('fs');
+var path = require('path');
 
 exports.detail = function(req,res){
 	var id = req.params.id;
@@ -26,6 +28,33 @@ exports.detail = function(req,res){
 	});
 };
 
+exports.uploadCoverFile = function(req,res,next){
+	var coverData = req.files.uploadCover;
+	var filePath = coverData.path;
+	var originalFilename = coverData.originalFilename;
+
+	if(originalFilename){
+		fs.readFile(filePath, function(err,data){
+			var timestamp = Date.now();
+			var type = coverData.type.split('/')[1];
+			var cover = timestamp + '.' + type;
+			//?
+			var newPath = path.join(__dirname, '../../', '/public/upload/' + cover);
+			fs.writeFile(newPath, data, function(err) {
+				if(err){
+					console.log(err);
+				}
+				req.cover = cover;
+				next();
+			});
+		});
+	}else{
+		//这里坑爹的放了个错误，没有把next放到else里去。
+		//导致文件读取较慢但是next已经执行了，所以直接执行了下一个路由
+		next();
+	}
+};
+
 exports.new = function(req,res){
 	res.render('admin',{
 		title:'wDBook ---后台录入页面',
@@ -46,6 +75,10 @@ exports.update = function(req,res){
 exports.save = function(req,res){
 	var id = req.body.book._id;
 	var bookObj = req.body.book;
+	var coverName = req.cover;
+	if(coverName){
+		bookObj.cover = coverName;
+	}
 	var _book;
 	if(typeof(id) !== 'undefined'){
 		Book.findById(id,function(err,book){
@@ -92,7 +125,7 @@ exports.del = function(req,res){
 	// var id = req.query.id
 
 	//express封装的id，先路径，后POST数据，最后再问号后
-	var id =  req.param('id');
+	var id =	req.param('id');
 	if(id){
 		Book.remove({_id:id},function(err,book){
 			if(err){

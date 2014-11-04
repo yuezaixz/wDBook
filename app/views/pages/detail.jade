@@ -4,7 +4,10 @@ block content
 	.contrainer
 		.row
 			.col-md-7
-				img(src="#{book.cover}",alt="#{book.title}")
+				if book.cover.indexOf('http:') > -1
+					img(src="#{book.cover}", alt="#{book.title}")
+				else
+					img(src="/upload/#{book.cover}", alt="#{book.title}")
 				.panel.panel-defatul
 					.panel-heading
 						h3 评论区

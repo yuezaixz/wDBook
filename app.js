@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var multipart = require('connect-multiparty');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var logger = require('morgan');
@@ -63,7 +64,8 @@ app.use(bodyParser());
 
 //session依赖的cookie解析
 app.use(cookieParser());
-//app.use(express.multipart());
+//开启表单混合类型中间件，用于文件上传
+app.use(multipart({uploadDir:'./public/upload'}));
 //开启session
 app.use(session({
 	//防止被篡改
