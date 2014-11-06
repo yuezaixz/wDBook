@@ -7,6 +7,13 @@ var path = require('path');
 
 exports.detail = function(req,res){
 	var id = req.params.id;
+
+	Book.update({_id: id}, {$inc: {pv: 1}}, function(err) {
+		if (err) {
+			console.log(err);
+		}
+	});
+
 	Book.findById(id,function(err,book){
 		if(err){
 			console.log(err);
@@ -38,7 +45,7 @@ exports.uploadCoverFile = function(req,res,next){
 			var timestamp = Date.now();
 			var type = coverData.type.split('/')[1];
 			var cover = timestamp + '.' + type;
-			//?
+			//当前文件路径向上两层后为根目录
 			var newPath = path.join(__dirname, '../../', '/public/upload/' + cover);
 			fs.writeFile(newPath, data, function(err) {
 				if(err){
